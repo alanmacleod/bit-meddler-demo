@@ -5,6 +5,8 @@ const WIDTH = 480, HEIGHT = 360, BIT_DEPTH = 4; // 32-bit
 
 const bm = new bitmeddler(WIDTH * HEIGHT);
 
+let load_count = 0; // hacky, I know, shut up its only a demo gawd
+
 let lctx = document.getElementById('cleft').getContext('2d');
 let rctx = document.getElementById('cright').getContext('2d');
 
@@ -17,6 +19,13 @@ let timer = window.setInterval(fizzle, 50);
 
 function fizzle()
 {
+  if (load_count != 2)
+  {
+    console.warn("Data not loaded yet!");
+    return;
+  }
+
+
   let ldat = lctx.getImageData(0, 0, WIDTH, HEIGHT);
   let rdat = rctx.getImageData(0, 0, WIDTH, HEIGHT);
 
@@ -67,6 +76,7 @@ function load_img_into_canvas(ctx, file)
   let img1 = new Image();
   img1.onload = () => {
     ctx.drawImage(img1, 0, 0);
+    load_count++;
   }
   img1.src = file;
 }
